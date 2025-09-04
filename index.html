@@ -237,6 +237,7 @@
             display: none;
             flex-grow: 1;
             padding: 40px 20px;
+            position: relative;
         }
         
         .dashboard-header {
@@ -275,6 +276,38 @@
         .dashboard-content p {
             color: rgba(255, 255, 255, 0.7);
             line-height: 1.6;
+        }
+        
+        /* User Profile Icon */
+        .user-profile-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0070c9, #00a8e8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .user-profile-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 168, 232, 0.4);
+        }
+        
+        .user-profile-icon i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .profile-upload-input {
+            display: none;
         }
         
         /* Footer Styles */
@@ -348,6 +381,17 @@
             .login-box {
                 padding: 30px;
             }
+            
+            .user-profile-icon {
+                top: 10px;
+                right: 10px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .user-profile-icon i {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -400,6 +444,12 @@
 
     <!-- Dashboard -->
     <div class="dashboard" id="dashboard">
+        <!-- User Profile Icon -->
+        <div class="user-profile-icon" id="userProfileIcon">
+            <i class="fas fa-user"></i>
+            <input type="file" id="profileUpload" class="profile-upload-input" accept="image/*">
+        </div>
+        
         <div class="container">
             <div class="dashboard-header">
                 <h1>BMW 320 Dashboard</h1>
@@ -451,6 +501,8 @@
         const loginAlert = document.getElementById('loginAlert');
         const loginBtn = document.getElementById('loginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
+        const userProfileIcon = document.getElementById('userProfileIcon');
+        const profileUpload = document.getElementById('profileUpload');
         
         // Check authentication state
         firebase.auth().onAuthStateChanged((user) => {
@@ -502,6 +554,24 @@
         loginBtn.addEventListener('click', () => {
             loginContainer.style.display = 'flex';
             dashboard.style.display = 'none';
+        });
+        
+        // Profile icon click handler
+        userProfileIcon.addEventListener('click', () => {
+            profileUpload.click();
+        });
+        
+        // Profile upload handler
+        profileUpload.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const file = e.target.files[0];
+                // Here you would typically upload the file to Firebase Storage
+                // and update the user's profile photo URL
+                console.log('Selected file:', file.name);
+                
+                // For demonstration purposes, we'll just show an alert
+                alert(`Profile picture "${file.name}" selected for upload. In a real application, this would be uploaded to the server.`);
+            }
         });
     </script>
 </body>
